@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery懒加载插件</title>
+    <style>
+        html,body,div,p{
+            margin: 0;
+            padding: 0;
+        }
+        .box,.tip{
+            width: 768px;
+            margin: 0 auto;
+        }
+        .box p{
+            padding: 100px 10px;
+            background: #ccc;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tip">
+        <h3>下面总共有100个p标签</h3>
+        <h3>每10个p标签中会出现一个有图片的p标签，用于测试懒加载是否生效</h3>
+    </div>
+    <div class="box">
+        <p>第1个p标签</p>
+        <p>第2个p标签</p>
+        <p>第3个p标签</p>
+        <p>第4个p标签</p>
+        <p>第5个p标签</p>
+        <p>第6个p标签</p>
+        <p>第7个p标签</p>
+        <p>第8个p标签</p>
+        <p>第9个p标签</p>
+        <p> 第10个p标签 <img data-src="./images/user/01.jpg" alt="头像" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第11个p标签</p>
+        <p>第12个p标签</p>
+        <p>第13个p标签</p>
+        <p>第14个p标签</p>
+        <p>第15个p标签</p>
+        <p>第16个p标签</p>
+        <p>第17个p标签</p>
+        <p>第18个p标签</p>
+        <p>第19个p标签</p>
+        <p> 第20个p标签 <img data-src="./images/user/02.jpg" alt="头像" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第21个p标签</p>
+        <p>第22个p标签</p>
+        <p>第23个p标签</p>
+        <p>第24个p标签</p>
+        <p>第25个p标签</p>
+        <p>第26个p标签</p>
+        <p>第27个p标签</p>
+        <p>第28个p标签</p>
+        <p>第29个p标签</p>
+        <p>第30个p标签<img alt="头像" data-src="./images/user/03.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第31个p标签</p>
+        <p>第32个p标签</p>
+        <p>第33个p标签</p>
+        <p>第34个p标签</p>
+        <p>第35个p标签</p>
+        <p>第36个p标签</p>
+        <p>第37个p标签</p>
+        <p>第38个p标签</p>
+        <p>第39个p标签</p>
+        <p>第40个p标签<img alt="头像" data-src="./images/user/04.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第41个p标签</p>
+        <p>第42个p标签</p>
+        <p>第43个p标签</p>
+        <p>第44个p标签</p>
+        <p>第45个p标签</p>
+        <p>第46个p标签</p>
+        <p>第47个p标签</p>
+        <p>第48个p标签</p>
+        <p>第49个p标签</p>
+        <p>第50个p标签<img alt="头像" data-src="./images/user/05.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第51个p标签</p>
+        <p>第52个p标签</p>
+        <p>第53个p标签</p>
+        <p>第54个p标签</p>
+        <p>第55个p标签</p>
+        <p>第56个p标签</p>
+        <p>第57个p标签</p>
+        <p>第58个p标签</p>
+        <p>第59个p标签</p>
+        <p>第60个p标签<img alt="头像" data-src="./images/user/06.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第61个p标签</p>
+        <p>第62个p标签</p>
+        <p>第63个p标签</p>
+        <p>第64个p标签</p>
+        <p>第65个p标签</p>
+        <p>第66个p标签</p>
+        <p>第67个p标签</p>
+        <p>第68个p标签</p>
+        <p>第69个p标签</p>
+        <p>第70个p标签<img alt="头像" data-src="./images/user/07.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第71个p标签</p>
+        <p>第72个p标签</p>
+        <p>第73个p标签</p>
+        <p>第74个p标签</p>
+        <p>第75个p标签</p>
+        <p>第76个p标签</p>
+        <p>第77个p标签</p>
+        <p>第78个p标签</p>
+        <p>第79个p标签</p>
+        <p>第80个p标签<img alt="头像" data-src="./images/user/08.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第81个p标签</p>
+        <p>第82个p标签</p>
+        <p>第83个p标签</p>
+        <p>第84个p标签</p>
+        <p>第85个p标签</p>
+        <p>第86个p标签</p>
+        <p>第87个p标签</p>
+        <p>第88个p标签</p>
+        <p>第89个p标签</p>
+        <p>第90个p标签<img alt="头像" data-src="./images/user/09.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+        <p>第91个p标签</p>
+        <p>第92个p标签</p>
+        <p>第93个p标签</p>
+        <p>第94个p标签</p>
+        <p>第95个p标签</p>
+        <p>第96个p标签</p>
+        <p>第97个p标签</p>
+        <p>第98个p标签</p>
+        <p>第99个p标签</p>
+        <p>第100个p标签<img alt="头像" data-src="./images/user/10.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></p>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="jquery.lazyload.js"></script>
+    <script>
+        $(function(){
+            $('img').lazyload();
+            $('img').lazyload();
+            $('img').lazyload();
+        })
+    </script>
+</body>
+</html>

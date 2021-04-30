@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form表单验证</title>
+</head>
+<body>
+    <div class="box">
+        <!-- 身份证号码验证、手机电话号码、电子邮箱验证、必填字段验证、最大值/最小值验证 -->
+        <!-- <input type="text" name="Name" > -->
+        <form action="post">
+            <input type="text" name="age" required t6>
+            <br>
+            <textarea name="desc" cols="30" rows="10"></textarea>
+        </form>
+    </div>
+
+    <script src="./js/jquery.js"></script>
+    <script src="jquery.validator.js"></script>
+    <script>
+        $(function(){
+            $("form").validate({
+                rules:[
+                    { 
+                        rule: 't6', pattern: /666/, message: '必必须填写666' 
+                    },
+                ],
+                callback:function(errors){
+                    console.log(errors);
+                }
+            })
+
+            var aa = $("form").validate();
+            console.log(aa);
+        })
+    </script>
+</body>
+</html>

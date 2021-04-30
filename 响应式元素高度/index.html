@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+    <style>
+        html,body,div{margin: 0;padding:0;
+            /* 字体初始化为微软雅黑== */
+            font-family: 'Microsoft Yahei','微软雅黑', \5FAE\8F6F\96C5\9ED1,'宋体',\5b8b\4f53,arial,'Hiragino Sans GB',Tahoma,Arial,Helvetica;
+        }
+
+        /* html{ font-size: 16px;} */
+        @media screen and  (max-width:320px) { html,body{font-size: 8px} }
+        @media screen and  (min-width:320px) and (max-width:420px) { html,body{font-size: 8px} }
+        @media screen and  (min-width:420px) and (max-width:520px) { html,body{font-size: 10px} }
+        @media screen and  (min-width:520px) and (max-width:630px) { html,body{font-size: 12px} }
+        @media screen and  (min-width:630px) and (max-width:750px) { html,body{font-size: 14px} }
+        @media screen and  (min-width:750px) { html,body{font-size: 16px} }
+
+        .box{
+            width: 100%;
+            background: pink;
+            height: 10rem;
+            box-sizing: border-box;
+            padding-top: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+         }
+         .message{
+             padding: 1.5rem;
+         }
+    </style>    
+</head>
+<body>
+    <div class="box">
+        当前盒子：.box{width: 100%;background: pink;height: 10rem; }
+        <br>
+
+    </div>
+
+    <div class="message">
+        <h3>说明</h3>
+        <p></p>
+        <p> 
+            媒体查询设置不同屏幕分辨率下字体大小 <br>
+            <ul>
+                <li>@media screen and  (max-width:320px) { html,body{font-size: 8px} } </li>
+                <li>@media screen and  (min-width:320px) and (max-width:420px) { html,body{font-size: 8px} }</li>
+                <li>@media screen and  (min-width:420px) and (max-width:520px) { html,body{font-size: 10px} }</li>
+                <li>@media screen and  (min-width:520px) and (max-width:630px) { html,body{font-size: 12px} }</li>
+                <li>@media screen and  (min-width:630px) and (max-width:750px) { html,body{font-size: 14px} }</li>
+                <li>@media screen and  (min-width:750px) { html,body{font-size: 16px} }</li>
+            </ul>
+               
+            
+            基于以上设置，页面应该有以下表现：
+            <ul>
+                <li>
+                    屏幕宽度小于320px时，页面字体大小8px，.box高度 80px = 10rem = 10 * 8px
+                </li>
+                <li>屏幕宽度介于320px到420px之间时，页面字体大小10px，.box高度 10rem = 10 * 10px = 100px</li>
+                <li>屏幕宽度介于420px到520px之间时，页面字体大小12px，.box高度 10rem = 10 * 12px = 120px</li>
+                <li>屏幕宽度介于520px到630px之间时，页面字体大小14px，.box高度 10rem = 10 * 14px = 140px</li>
+                <li>屏幕宽度介于630px到750px之间时，页面字体大小16px，.box高度 10rem = 10 * 16px = 160px</li>
+                <li>屏幕宽度大于750px时，页面字体大小16px，.box高度 10rem = 10 * 16px = 160px</li>
+            </ul>
+            <p>
+                测试后发现，在谷歌浏览器下，调整浏览器大小，box颜色快最小高度只能大于等于120px。原因是:
+                <ul>
+                    <li>谷歌浏览器对最小字体限制是12px;</li>
+                    <li>当设置字体大小低于12px时，设置会失效，并且字体大小会被重置为12px</li>
+                </ul>
+                基于以上媒体代码的字体大小设置及，当屏幕宽度小于520px时，虽然对于 html,body{font-size: ...px}的设置依然生效，但是html,body最终表现的font-size会被浏览器限制的字体大小(最小字体12px)覆盖。
+            </p>
+            <p>
+                基于测试结果，几点响应式页面设计的建议
+                <ul>
+                    <li></li>
+                    <li>谷歌浏览器下css中使用rem作为单位时，html,body根节点字体大小设置小于12px是没有意义的</li>
+                </ul>
+            </p>
+        </p>
+    </div>
+
+</body>
+</html>

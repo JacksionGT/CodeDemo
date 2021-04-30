@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>underscore练习</title>
+</head>
+<body>
+    <h1>题目要求</h1>
+    <p>
+            假定在我们的工程中，已经 占据 了 _ 对象，那么，之后我们引入 underscore，_ 就会被 underscore 夺走，请给underscore扩展一个noConflict方法放弃Underscore 的控制变量"_"，返回Underscore 对象的引用。请说明你的思路并附上代码。
+    </p>
+    <pre>
+        var _ = {
+            owner: 'max'
+        };
+            
+        // 引入underscore后
+            
+        console.log(_.owner); // => undefined
+    </pre>
+    <h1>请打开控制台查看输出</h1>
+    <p>这里为了模拟题目的要求，所以先声明外部_</p>
+    <p>再引入underscore</p>
+    <p>再写测试diamagnetic</p>
+    <pre>
+        &lt;script&gt;
+        var _ = {
+            owner: 'max'
+        };
+        &lt;/script&gt;
+        &lt;script src="./rejectNana.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+        
+            console.log(_.owner); // =&gt; undefined
+
+            var tools = _.noConflict();
+
+            console.log(_.owner); // =&gt; max
+
+            var testArray = [NaN ,1,21,32,NaN,41,5];
+
+            // 去除NaN
+            var distArray = tools.rejectNaNFunction(testArray);
+            console.log(distArray);
+        &lt;/script&gt;
+    </pre>
+
+    
+    <script>
+        var _ = {
+            owner: 'max'
+        };
+    </script>
+    <script src="./rejectNana.js"></script>
+    <script>
+    
+        console.log(_.owner); // => undefined
+
+        var tools = _.noConflict();
+
+        console.log(_.owner); // => max
+
+        var testArray = [NaN ,1,21,32,NaN,41,5];
+        var distArray = tools.rejectNaNFunction(testArray);
+        console.log(distArray);
+    </script>
+</body>
+</html>
