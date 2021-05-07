@@ -26,7 +26,12 @@ function readDirSync(path) {
 function createFile(obj) {
     const { path, data } = obj;
     console.log(`-------------------创建文件: ${path}-------------------`);
-    const txt = Buffer.from(data).toString();
+    const [tag, title] = path.substr(0,path.lastIndexOf('.')).split('/');
+    const tagTxt = title ? `\ntags: [${tag}]`: '';
+    const toc = `---
+title: ${title||tag}${tagTxt}
+---`;
+    const txt = `${Buffer.from(data).toString()}\n${toc}`;
     fs.writeFileSync(path, txt);
     console.log(`写入成功: ${path}`);
 }
