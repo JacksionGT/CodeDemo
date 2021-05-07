@@ -40,7 +40,9 @@ end - 3
 由于需要发送请求，使用koa提供/get接口api，并新建html做为入口测试。
 * index.html 入口文件，测试代码在script标签中
 * app.js koa服务入口：提供html文件访问/接口get访问服务
+
 测试步骤:
+
 * 进入文件夹
 * npm i
 * 打开浏览器控制台，访问`http://localhost:8080`
