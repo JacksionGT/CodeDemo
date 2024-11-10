@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>示例页面</title>
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .nav {
+      margin-bottom: 20px;
+    }
+    .nav a {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="/">首页</a>
+      <a href="/example">示例页面</a>
+      <a href="/auth/logout">退出登录</a>
+    </div>
+    <h2>这是一个受保护的示例页面</h2>
+    <p>当前登录用户: <%= username %></p>
+    <div>
+      <h3>这是一些受保护的内容</h3>
+      <ul>
+        <li>只有登录用户才能看到这个页面</li>
+        <li>这个页面使用Cookie JWT认证</li>
+        <li>访问时间: <%= new Date().toLocaleString() %></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html> 
