@@ -53,6 +53,7 @@ $("#txtImageName").keydown(function () {
     $("#validateImageInput").hide();
 });
 
+
 $("#btnDroppedSave").click(function () {
     var imageName = $("#txtImageName").val();
 
