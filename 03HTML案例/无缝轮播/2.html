@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无缝轮播的实现2</title>
+    <style>
+        html,body{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #3e3e3e;
+        }
+        .container{
+            width: var(--item-width);
+            height: var(--item-height);
+            margin: 100px auto;
+            position: relative;
+            width: 400px;
+            border: 3px solid #900000;
+        }
+        .box{
+            width: 100%;
+            margin: 0 auto;
+            height: 300px;
+            position: relative;
+        }
+        .items{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-prev {
+            left: 10px;
+        }
+
+        .btn-next {
+            right: 10px;
+        }
+
+        .indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="items" style="background-color: rgb(238, 156, 156);">1️⃣</div>
+            <div class="items" style="background-color: rgb(107, 159, 107);">2️⃣</div>
+            <div class="items" style="background-color: rgb(83, 83, 138);">3️⃣</div>
+        </div>
+        <button class="btn btn-prev">←</button>
+        <button class="btn btn-next">→</button>
+        <div class="indicators">
+            <div class="indicator active"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+        </div>
+    </div>
+
+    <div>
+        <ul>
+            <li>布局item以绝对定位铺满它的父容器</li>
+            <li>切换时，只需要改变正在显示的item以及相邻的item的translateX的值</li>
+            <li>无需克隆item</li>
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const box = document.querySelector('.box');
+            const items = document.querySelectorAll('.items');
+            const btnPrev = document.querySelector('.btn-prev');
+            const btnNext = document.querySelector('.btn-next');
+            const indicators = document.querySelectorAll('.indicator');
+
+            let currentIndex = 0;
+
+            const updateUI = () => {
+                let currentItem = items[currentIndex];
+                let prevItem = items[currentIndex - 1];
+                let nextItem = items[currentIndex + 1];
+                console.log(currentIndex);
+                
+
+                if(currentIndex === 0) {
+                    prevItem = items[items.length - 1];
+                }
+                if(currentIndex === items.length - 1) {
+                    nextItem = items[0];
+                }
+                
+                currentItem.style.transform = `translateX(0)`;
+                currentItem.style.zIndex = 1;
+                prevItem.style.transform = `translateX(-100%)`;
+                prevItem.style.zIndex = 0;
+                nextItem.style.transform = `translateX(100%)`;
+                nextItem.style.zIndex = 0;
+
+            }
+
+            updateUI();
+
+            btnPrev.addEventListener('click', () => {
+                currentIndex -= 1;
+                if(currentIndex < 0) {
+                    currentIndex = items.length - 1;
+                }
+                requestAnimationFrame(() =>{
+                    updateUI();
+                });
+            })
+            btnNext.addEventListener('click', () => {
+                currentIndex += 1;
+                if(currentIndex > items.length - 1) {
+                    currentIndex = 0;
+                }
+                requestAnimationFrame(() =>{
+                    updateUI();
+                });
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无缝轮播1</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            --item-width: 400px;
+            --item-height: 300px;
+            background: #3e3e3e;
+        }
+
+        .container {
+            width: var(--item-width);
+            height: var(--item-height);
+            margin: 100px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .items {
+            flex: 0 0 100%;
+            height: 100%;
+            font-size: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 50%;
+        }
+
+        .btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-prev {
+            left: 10px;
+        }
+
+        .btn-next {
+            right: 10px;
+        }
+
+        .indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="items" style="background-color: rgb(238, 156, 156);">1️⃣</div>
+            <div class="items" style="background-color: rgb(107, 159, 107);">2️⃣</div>
+            <div class="items" style="background-color: rgb(83, 83, 138);">3️⃣</div>
+        </div>
+        <button class="btn btn-prev">←</button>
+        <button class="btn btn-next">→</button>
+        <div class="indicators">
+            <div class="indicator active"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+        </div>
+    </div>
+
+    <div>
+        <ul>
+            <li>布局item以及它的父容器需要规定宽度</li>
+            <li>切换时，只需要改变translateX的值</li>
+            <li>需要克隆item分别添加到父容器的开头和结尾</li>
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const box = document.querySelector('.box');
+            const items = document.querySelectorAll('.items');
+            const btnPrev = document.querySelector('.btn-prev');
+            const btnNext = document.querySelector('.btn-next');
+            const indicators = document.querySelectorAll('.indicator');
+
+            const init = () => {
+                const firstItem = items[0].cloneNode(true);
+                box.appendChild(firstItem);
+                const lastItem = items[items.length - 1].cloneNode(true);
+                lastItem.style.marginLeft = `-100%`;
+                box.insertBefore(lastItem, items[0]);
+            }
+
+            const updateIndicator = () => {
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentIndex);
+                })
+            }
+
+            init();
+
+            let currentIndex = 0;
+
+            btnPrev.addEventListener('click', () => {
+                if (currentIndex === 0) {
+                    box.style.transition = 'none';
+                    box.style.transform = `translateX(-${items.length * 100}%)`;
+                    currentIndex = items.length - 1;
+                    requestAnimationFrame(() => {
+                        box.style.transition = 'transform 0.2s ease-in-out';
+                        box.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    })
+                } else {
+                    currentIndex--;
+                    box.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+                updateIndicator();
+            })
+
+            btnNext.addEventListener('click', () => {
+                if (currentIndex === items.length - 1) {
+                    box.style.transition = 'none';
+                    box.style.transform = `translateX(100%)`;
+                    currentIndex = 0;
+                    requestAnimationFrame(() => {
+                        box.style.transition = 'transform 0.2s ease-in-out';
+                        box.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    })
+                } else {
+                    currentIndex++;
+                    box.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+                updateIndicator();
+            })
+
+
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    currentIndex = index;
+                    box.style.transform = `translateX(-${index * 100}%)`;
+                    updateIndicator();
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
