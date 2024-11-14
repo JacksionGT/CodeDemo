@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>无缝轮播的实现2</title>
     <style>
-        html,body{
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
             background: #3e3e3e;
         }
-        .container{
+
+        .container {
             width: var(--item-width);
             height: var(--item-height);
             margin: 100px auto;
             position: relative;
             width: 400px;
-            border: 3px solid #900000;
+            overflow: hidden;
         }
-        .box{
+
+        .box {
             width: 100%;
             margin: 0 auto;
             height: 300px;
             position: relative;
         }
-        .items{
+
+        .items {
             width: 100%;
             height: 100%;
             display: flex;
@@ -35,9 +40,10 @@
             position: absolute;
             top: 0;
             left: 0;
-            transition: transform 0.5s ease-in-out;
+            transition: transitionStyle;
+            z-index: 1;
         }
-        
+
         .btn {
             position: absolute;
             top: 50%;
@@ -88,17 +94,20 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="box">
             <div class="items" style="background-color: rgb(238, 156, 156);">1️⃣</div>
             <div class="items" style="background-color: rgb(107, 159, 107);">2️⃣</div>
             <div class="items" style="background-color: rgb(83, 83, 138);">3️⃣</div>
+            <div class="items" style="background-color: rgb(207, 53, 197);">4️⃣</div>
         </div>
         <button class="btn btn-prev">←</button>
         <button class="btn btn-next">→</button>
         <div class="indicators">
             <div class="indicator active"></div>
+            <div class="indicator"></div>
             <div class="indicator"></div>
             <div class="indicator"></div>
         </div>
@@ -121,50 +130,118 @@
 
             let currentIndex = 0;
 
-            const updateUI = () => {
-                let currentItem = items[currentIndex];
-                let prevItem = items[currentIndex - 1];
-                let nextItem = items[currentIndex + 1];
-                console.log(currentIndex);
-                
+            const transitionStyle = 'transform 0.2s ease-in-out';
 
-                if(currentIndex === 0) {
-                    prevItem = items[items.length - 1];
-                }
-                if(currentIndex === items.length - 1) {
-                    nextItem = items[0];
-                }
-                
-                currentItem.style.transform = `translateX(0)`;
-                currentItem.style.zIndex = 1;
-                prevItem.style.transform = `translateX(-100%)`;
-                prevItem.style.zIndex = 0;
-                nextItem.style.transform = `translateX(100%)`;
-                nextItem.style.zIndex = 0;
 
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    switchToIndex(index);
+                })
+            })
+
+
+            const updateIndicators = () => {
+                indicators.forEach(indicator => {
+                    indicator.classList.remove('active');
+                })
+                indicators[currentIndex].classList.add('active');
             }
 
-            updateUI();
+            const switchToIndex = (index) => {
+                init();
 
-            btnPrev.addEventListener('click', () => {
-                currentIndex -= 1;
-                if(currentIndex < 0) {
+                console.log(currentIndex, index);
+
+
+                const arrow = index > currentIndex ? -1 : 1;
+                const moveX = (index - currentIndex) * arrow * 100;
+                console.log(moveX);
+                currentIndex = index;
+                updateIndicators();
+
+                requestAnimationFrame(() => {
+                    for (let i = 0; i < items.length; i++) {
+                        items[i].style.transition = transitionStyle;
+                        items[i].style.transform = `translateX(${(i - currentIndex) * 100}%)`;
+                    }
+                })
+            }
+
+            const init = () => {
+                for (let i = 0; i < items.length; i++) {
+                    items[i].style.transition = 'none';
+                    items[i].style.transform = `translateX(${(i - currentIndex) * 100}%)`;
+                    indicators[i].classList.remove('active');
+                }
+            }
+            init();
+            updateIndicators();
+
+            const switchLeft = () => {
+                initItemPosition();
+                let currentItem = items[currentIndex];
+                let prevItem = items[currentIndex - 1];
+
+                if (currentIndex === 0) {
+                    prevItem = items[items.length - 1];
                     currentIndex = items.length - 1;
+                } else {
+                    currentIndex -= 1;
                 }
-                requestAnimationFrame(() =>{
-                    updateUI();
+                currentItem.style.transition = 'none';
+                prevItem.style.transition = 'none';
+                currentItem.style.transform = `translateX(0)`;
+                prevItem.style.transform = `translateX(-100%)`;
+                updateIndicators();
+                requestAnimationFrame(() => {
+                    currentItem.style.transition = transitionStyle;
+                    prevItem.style.transition = transitionStyle;
+                    currentItem.style.transform = `translateX(100%)`;
+                    prevItem.style.transform = `translateX(0)`;
                 });
-            })
-            btnNext.addEventListener('click', () => {
-                currentIndex += 1;
-                if(currentIndex > items.length - 1) {
+            }
+
+            const switchRight = () => {
+                initItemPosition();
+                let currentItem = items[currentIndex];
+                let nextItem = items[currentIndex + 1];
+
+                if (currentIndex === items.length - 1) {
+                    nextItem = items[0];
                     currentIndex = 0;
+                } else {
+                    currentIndex += 1;
                 }
-                requestAnimationFrame(() =>{
-                    updateUI();
+                currentItem.style.transition = 'none';
+                nextItem.style.transition = 'none';
+                currentItem.style.transform = `translateX(0)`;
+                nextItem.style.transform = `translateX(100%)`;
+                updateIndicators();
+                requestAnimationFrame(() => {
+                    currentItem.style.transition = transitionStyle;
+                    nextItem.style.transition = transitionStyle;
+                    currentItem.style.transform = `translateX(-100%)`;
+                    nextItem.style.transform = `translateX(0)`;
                 });
-            })
+            }
+
+            const initItemPosition = () => {
+                items.forEach(item => {
+                    item.style.transition = 'none';
+                    item.style.transform = `translateX(200%)`;
+                })
+            }
+
+            // 点击向左/上一张按钮
+            btnPrev.addEventListener('click', switchLeft);
+
+            // 点击向右/下一张按钮
+            btnNext.addEventListener('click', switchRight);
+            setInterval(() => {
+                switchRight();
+            }, 2000);
         })
     </script>
 </body>
+
 </html>
